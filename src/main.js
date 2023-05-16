@@ -1,4 +1,4 @@
-import { Telegraf, session } from 'telegraf'
+import { Telegraf, session, Markup } from 'telegraf'
 import { message } from 'telegraf/filters'
 import { code } from 'telegraf/format'
 import config from 'config'
@@ -6,14 +6,31 @@ import { ogg } from './ogg.js'
 import { openai } from './openai.js'
 import { removeFile } from './utils.js'
 import { initCommand, processTextToChat, INITIAL_SESSION } from './logic.js'
+import clipboardy from 'clipboardy';
 
 const bot = new Telegraf(config.get('TELEGRAM_TOKEN'))
 
-bot.use(session())
+bot.command('start', async (ctx) => {
+   // Удаление сообщения /start
+   ctx.deleteMessage(ctx.message.message_id)
+      .catch((error) => {
+         console.log('Ошибка при удалении сообщения:', error);
+      });
 
-bot.command('new', initCommand)
+   // Ваш код для обработки команды /start
+   // ...
+   initCommand(ctx);
+});
 
-bot.command('start', initCommand)
+
+bot.command('new', async (ctx) => {
+   ctx.deleteMessage(ctx.message.message_id)
+      .catch((error) => {
+         console.log('Ошибка при удалении сообщения:', error)
+      });
+   ctx.reply('Начат новый диалог.', initCommand(ctx))
+})
+
 
 bot.on(message('voice'), async (ctx) => {
    ctx.session ??= INITIAL_SESSION
@@ -44,6 +61,8 @@ bot.on(message('text'), async (ctx) => {
       console.log(`Error while voice message`, e.message)
    }
 })
+
+
 
 bot.launch()
 
