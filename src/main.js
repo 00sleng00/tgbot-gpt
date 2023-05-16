@@ -1,4 +1,4 @@
-import { Telegraf, session, Markup } from 'telegraf'
+import { Telegraf } from 'telegraf'
 import { message } from 'telegraf/filters'
 import { code } from 'telegraf/format'
 import config from 'config'
@@ -6,7 +6,6 @@ import { ogg } from './ogg.js'
 import { openai } from './openai.js'
 import { removeFile } from './utils.js'
 import { initCommand, processTextToChat, INITIAL_SESSION } from './logic.js'
-import clipboardy from 'clipboardy';
 
 const bot = new Telegraf(config.get('TELEGRAM_TOKEN'))
 
