@@ -15,9 +15,7 @@ bot.command('start', async (ctx) => {
       .catch((error) => {
          console.log('Ошибка при удалении сообщения:', error);
       });
-
-   // Ваш код для обработки команды /start
-   // ...
+   
    initCommand(ctx);
 });
 
