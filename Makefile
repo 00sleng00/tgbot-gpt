@@ -4,9 +4,8 @@ HELL = /bin/bash
 include .env
 export
 
-docker := $(shell command -v docker 2> /dev/null)
 docker-compose:= docker compose -f docker-compose.yml
-docker-tgbot := $(docker) exec -u root -it tgbot-npm
+docker-tgbot := docker exec -it tgbot
 
 build:
 	docker build -t tgbot .
@@ -15,7 +14,7 @@ run:
 	docker run -d -p 3000:3000 --name tgbot --rm tgbot
 
 bash-tgbot:
-	$(docker-tgbot) bash
+	$(docker-tgbot) sh
 
 logs:
 	 docker logs tgbot --tail=100 --follow
