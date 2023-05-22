@@ -13,9 +13,9 @@ bot.command('start', async (ctx) => {
    // Удаление сообщения /start
    ctx.deleteMessage(ctx.message.message_id)
       .catch((error) => {
-         console.log('Ошибка при удалении сообщения:', error);
+         console.error('Ошибка при удалении сообщения:', error);
       });
-   
+   console.info('Bot: start')
    initCommand(ctx);
 });
 
@@ -23,8 +23,10 @@ bot.command('start', async (ctx) => {
 bot.command('new', async (ctx) => {
    ctx.deleteMessage(ctx.message.message_id)
       .catch((error) => {
-         console.log('Ошибка при удалении сообщения:', error)
+         console.error('Ошибка при удалении сообщения:', error)
       });
+
+   console.info('Bot: new')
    ctx.reply('Начат новый диалог.', initCommand(ctx))
 })
 
@@ -32,11 +34,13 @@ bot.command('new', async (ctx) => {
 bot.on(message('voice'), async (ctx) => {
    ctx.session ??= INITIAL_SESSION
    try {
+
       await ctx.reply(code('Сообщение принял. Жду ответ от сервера...'))
       const link = await ctx.telegram.getFileLink(ctx.message.voice.file_id)
       const userId = String(ctx.message.from.id)
       const oggPath = await ogg.create(link.href, userId)
       const mp3Path = await ogg.toMp3(oggPath, userId)
+      console.info('Bot: voice from ', userId)
 
       removeFile(oggPath)
 
@@ -45,17 +49,19 @@ bot.on(message('voice'), async (ctx) => {
 
       await processTextToChat(ctx, text)
    } catch (e) {
-      console.log(`Error while voice message`, e.message)
+      console.error(`Error while voice message`, e)
    }
 })
 
 bot.on(message('text'), async (ctx) => {
    ctx.session ??= INITIAL_SESSION
    try {
+      const userId = String(ctx.message.from.id)
+      console.info('Bot: text from ', userId, ' Mess:' ,ctx.message.text)
       await ctx.reply(code('Сообщение принял. Жду ответ от сервера...'))
       await processTextToChat(ctx, ctx.message.text)
    } catch (e) {
-      console.log(`Error while voice message`, e.message)
+      console.error(`Error while voice message`, e)
    }
 })
 

@@ -18,13 +18,15 @@ class OpenAI {
 
    async chat(messages) {
       try {
+         console.info('Chat GPT send: ', messages);
          const response = await this.openai.createChatCompletion({
             model: 'gpt-3.5-turbo',
             messages,
          })
+         console.info('Chat GPT response: ', response.headers, response.data, response.data.choices[0].message);
          return response.data.choices[0].message
       } catch (e) {
-         console.log('Error while gpt chat', e.message)
+         console.error('Error while gpt chat', e)
       }
    }
 
@@ -36,7 +38,7 @@ class OpenAI {
          )
          return response.data.text
       } catch (e) {
-         console.log('Error while transcription', e.message)
+         console.error('Error while transcription', e)
       }
    }
 }

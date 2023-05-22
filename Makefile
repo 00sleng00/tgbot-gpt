@@ -12,7 +12,10 @@ build:
 	docker build -t tgbot .
 
 run:
-	docker run -p 3000:3000 --name tgbot --rm tgbot
+	docker run -d -p 3000:3000 --name tgbot --rm tgbot
 
 bash-tgbot:
 	$(docker-tgbot) bash
+
+logs:
+	 docker logs tgbot --tail=100 --follow

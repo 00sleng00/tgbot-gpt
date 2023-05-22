@@ -11,6 +11,12 @@ export async function initCommand(ctx) {
 
 export async function processTextToChat(ctx, content) {
    try {
+      // Limit на размер контекста
+      if (ctx.session.messages.length > 10) {
+         ctx.session.messages.pop()
+         ctx.session.messages.pop()
+      }
+
       ctx.session.messages.push({ role: openai.roles.USER, content })
 
       const response = await openai.chat(ctx.session.messages)
@@ -22,6 +28,6 @@ export async function processTextToChat(ctx, content) {
 
       await ctx.reply(response.content)
    } catch (e) {
-      console.log('Error while proccesing text to gpt', e.message)
+      console.error('Error while proccesing text to gpt', e)
    }
 }
