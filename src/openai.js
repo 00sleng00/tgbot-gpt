@@ -17,7 +17,8 @@ class OpenAI {
    }
 
    async chat(messages) {
-      try {
+      // Убрал поимку исключения, чтоб это делалось в processTextToChat
+      // try {
          console.info('Chat GPT send: ', messages);
          const response = await this.openai.createChatCompletion({
             model: 'gpt-3.5-turbo',
@@ -25,9 +26,9 @@ class OpenAI {
          })
          console.info('Chat GPT response: ', response.headers, response.data, response.data.choices[0].message);
          return response.data.choices[0].message
-      } catch (e) {
-         console.error('Error while gpt chat', e)
-      }
+      // } catch (e) {
+      //    console.error('Error while gpt chat', e)
+      // }
    }
 
    async transcription(filepath) {

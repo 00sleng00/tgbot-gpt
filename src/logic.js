@@ -28,6 +28,10 @@ export async function processTextToChat(ctx, content) {
 
       await ctx.reply(response.content)
    } catch (e) {
+      // При ошибке сбрасываем контекст
+      ctx.session.messages = [];
       console.error('Error while proccesing text to gpt', e)
+      // и отправляем в чат сообщение об ошибке
+      await ctx.reply('К сожалению произошла ошибка. Попробуйте снова.')
    }
 }
