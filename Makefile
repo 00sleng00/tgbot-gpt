@@ -7,6 +7,11 @@ export
 docker-compose:= docker compose -f docker-compose.yml
 docker-tgbot := docker exec -it tgbot
 
+re-create: build stop run logs
+
+stop:
+	docker stop tgbot
+
 build:
 	docker build -t tgbot .
 
